@@ -48,6 +48,31 @@ export class AudioSource
 
 
   /**
+   * 
+   * @param {File} file The inpit file loaded into the browser
+   */
+  loadAudioFromFile( file )
+  {
+    return new Promise( (resolve, reject) => {
+
+      let reader = new FileReader();
+      reader.addEventListener( 'load', (e) => {
+        let data = e.target.result;
+        this.audioContext.decodeAudioData(data, (buffer) => {
+          this.source = this.audioContext.createBufferSource();
+          this.source.buffer = buffer;
+          this.sourceType = "audiofile";
+          if( config.showloginfos ) console.log( `Audio from file loaded\n------------` );
+          resolve();
+        });
+      });
+      reader.readAsArrayBuffer( file );
+
+    });
+  }
+
+
+  /**
    * Grab stream from user media
    * if user media is not available, throws an error
    * @param {boolean=} audioFeedback If the microphone stream is sent to the destination

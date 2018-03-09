@@ -61,6 +61,7 @@ let userSelection = new UserSelection( (selectionType, info) => {
       break;
     
     case UserSelection.LOAD_TYPE.INPUT_FILE:
+      audiosource.loadAudioFromFile( info ).then(init);
       break;
   }
 

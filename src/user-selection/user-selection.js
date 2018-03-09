@@ -123,20 +123,20 @@ export class UserSelection
 
   dropHandler( event )
   {
-    let fLoaded = false;
+    let fLoaded = false, file = null;
 
     if( event.dataTransfer.items )
     {
       let item = event.dataTransfer.items[0];
       if( item.kind === 'file' )
       {
-        let file = item.getAsFile();
+        file = item.getAsFile();
         fLoaded = true;
       }
     }
     else 
     {
-      let file = event.dataTransfer.files[0];
+      file = event.dataTransfer.files[0];
       fLoaded = true;
     }
 
