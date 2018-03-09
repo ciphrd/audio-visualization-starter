@@ -23,7 +23,7 @@ export class AudioSource
    * @returns {Promise} A promise that resolves if the file is loaded, rejected if the file 
    * cannot be loaded or if the file isn't a valid audio file
    */
-  loadAudioFromFile( filepath )
+  loadAudioFromLibrary( filepath )
   {
     if( config.showloginfos ) console.log( `Loading file ${filepath}` );
 
