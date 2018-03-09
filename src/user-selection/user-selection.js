@@ -1,16 +1,19 @@
+import AppConfig from '../config/app.config';
+import { Loader } from '../loader/loader';
 
 /**
- * Handles the pre-selection
+ * Creates a pre-selection screen, handles its dom elements
+ * and display an user interface for the audio stream selection
  */
 export class UserSelection
 {
   /**
    * Callback param 1: type of 
-   * @param {*} callback The method to be called once the user has selected 
+   * @param {*} callback The method to be called once the user has selected an option
    */
   constructor( callback )
   {
-    this.setupLoader();
+    this.loader = new Loader("LOADING LIBRARY");
 
     this.callback = callback;
     this.files = [];
@@ -28,22 +31,14 @@ export class UserSelection
     })
   }
 
-  setupLoader()
-  {
-    document.body.innerHTML+= `<div id="loader"><div class="loading-text">LOADING LIBRARY</div></div>`;
-    this.domElementLoader = document.getElementById("loader");
-    setTimeout(()=>{
-      this.domElementLoader.classList.add("loading");
-    }, 10);
-  }
 
+  /**
+   * Creates the dom elements and associate the events
+   * to them
+   */
   setupSelection()
   {
-    this.domElementLoader.classList.remove('loading');
-    this.domElementLoader.classList.add('loaded');
-    setTimeout(()=>{
-      this.domElementLoader.remove();
-    }, 1000);
+    this.loader.loaded();
 
     this.domElement = document.createElement("div");
     this.domElement.setAttribute('id', "user-selection");
@@ -52,7 +47,7 @@ export class UserSelection
       <div class="top-info">Select the track you'd wish to visualize</div>
       <div class="tracks"></div>
     </div>
-    <div class="bottom-infos">Duing the visualization, you can toggle the HUD by pressing H</div>`;
+    <div class="bottom-infos">During the visualization, you can toggle the HUD by pressing H</div>`;
 
     this.domElement.ondragenter = (e) => { e.preventDefault(); };
     this.domElement.ondragover = (e) => { e.preventDefault(); };
@@ -88,39 +83,67 @@ export class UserSelection
     document.body.appendChild( this.domElement );
   }
 
-  clearLoader()
+
+  /** 
+   * Hides the user selection and removes then elements from the DOM
+   * @returns {Promise} resolves when the elements are hidden
+   */
+  clearSelection()
   {
     this.domElement.className+= " hide";
 
     return new Promise( (resolve) => {
       setTimeout(()=>{
         this.domElement.remove();
-        resolve();
       }, 1100);
+      setTimeout(()=>{
+        resolve();
+      }, 800);
     })
   }
 
+
+  /**
+   * Called when user selected a file from the library
+   * Calls the callback method with the audio file to read
+   */
   loadFile( file )
   {
-    this.clearLoader().then( () => {
-      this.callback( 0, `./dist/audio/${file.directory}/${file.filename}` );
+    this.clearSelection().then( () => {
+      this.callback( UserSelection.LOAD_TYPE.LIBRARY_FILE, `./dist/audio/${file.directory}/${file.filename}` );
     });
   }
 
+
+  /**
+   * Called when user selected microphone
+   * Calls the callback method
+   */
   loadMicrophone()
   {
-    this.clearLoader().then( () => {
-      this.callback(2);
+    this.clearSelection().then( () => {
+      this.callback( UserSelection.LOAD_TYPE.INPUT_MICROPHONE );
     });
   }
 
+
+  /**
+   * Called when user dropped an audio file 
+   * Calls the callback method sending the file data to be read
+   * @param {File} file The file buffer to be read
+   */
   loadBuffer( file )
   {
-    this.clearLoader().then( () => {
-      this.callback(1, file);
+    this.clearSelection().then( () => {
+      this.callback( UserSelection.LOAD_TYPE.INPUT_FILE, file );
     });
   }
 
+
+  /**
+   * Handles the drop event trigger
+   * @param {DragEvent} event 
+   */
   dropHandler( event )
   {
     let fLoaded = false, file = null;
@@ -144,8 +167,16 @@ export class UserSelection
     {
       this.loadBuffer(file);
     }
+    else if( AppConfig.showerrors )
+    {
+      console.error( `The file is not an audio type.` );
+    }
   }
 
+
+  /**
+   * Loads the library file 
+   */
   loadLibraryFile()
   {
     return new Promise( (resolve, reject) => {
@@ -153,12 +184,22 @@ export class UserSelection
       xhr.responseType = 'text';
       xhr.open( "GET", "./dist/audio/sound-library.json", true );
       xhr.onloadend = () => {
+        if( AppConfig.showloginfos ) console.log( `Library file loaded\n------------` );
         resolve( JSON.parse(xhr.response) );
+      }
+      xhr.onerror = () => {
+        if( AppConfig.showerrors ) console.error( `Couldn't load the library file ./dist/audio/sound-library.json` );
+        reject();
       }
       xhr.send();
     })
   }
 
+
+  /**
+   * Loads the images from the library
+   * @returns {Promise} a promise which resolves once all the images are loaded
+   */
   loadCovers()
   {
     let loaded = 0;
@@ -171,6 +212,13 @@ export class UserSelection
           if( loaded == this.files.length )
             resolve();
         }
+        image.onerror = () => { 
+          loaded++;
+          file.image = '';
+          if( AppConfig.showerrors ) console.error( `Couldn't load the cover /${file.directory}/${file.cover}` );
+          if( loaded == this.files.length )
+            resolve();
+        };
         image.src = `./dist/audio/${file.directory}/${file.cover}`;
       });
     });
@@ -186,6 +234,10 @@ export class UserSelection
 };
 
 
+/**
+ * Very simple SoundFile structure, used to handle the
+ * files from the library
+ */
 class SoundFile
 {
   constructor( options )

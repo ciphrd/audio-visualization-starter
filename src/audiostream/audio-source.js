@@ -18,7 +18,7 @@ export class AudioSource
 
 
   /**
-   * Loads audio from a file
+   * Loads audio from a file stored in the library
    * @param {string} filepath Path to the file to be loaded 
    * @returns {Promise} A promise that resolves if the file is loaded, rejected if the file 
    * cannot be loaded or if the file isn't a valid audio file
@@ -48,8 +48,9 @@ export class AudioSource
 
 
   /**
-   * 
+   * Loads audio stream from a file provided by the user
    * @param {File} file The inpit file loaded into the browser
+   * @returns {Promise} a promise that resolves once the audio is loaded
    */
   loadAudioFromFile( file )
   {
@@ -58,7 +59,7 @@ export class AudioSource
       let reader = new FileReader();
       reader.addEventListener( 'load', (e) => {
         let data = e.target.result;
-        this.audioContext.decodeAudioData(data, (buffer) => {
+        this.audioContext.decodeAudioData(data).then( (buffer) => {
           this.source = this.audioContext.createBufferSource();
           this.source.buffer = buffer;
           this.sourceType = "audiofile";

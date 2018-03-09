@@ -1,3 +1,4 @@
 * lowpass / high pass beat detection 
 * régler cette putain de variable d'environnement
-* implémenter une fonction loadAudioFromBuffer pour drag&drop
+* toggle HUD
+* interface interaaction utilisateur
