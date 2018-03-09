@@ -8,6 +8,11 @@ import { EASINGS } from '../utility/easings';
 
 /**
  * Provides a flexible analysis to an audio stream
+ * Some papers I used for the peak detection algorithms
+ * [http://archive.gamedev.net/archive/reference/programming/features/beatdetection/]
+ * [http://joesul.li/van/beat-detection-using-web-audio/]
+ * This implementation differs from those shown in those papers, but they are
+ * a good start to understand how peaks can be detected
  */
 export class AudioAnalyser
 {
@@ -34,6 +39,11 @@ export class AudioAnalyser
   analyse( audioData, deltaTime, currentTimer )
   {
     this.iterations++;
+
+    /**
+     * This method looks horrible but the logical tests are useful to save CPU usage
+     * if all the analysis are not required by the visualizer
+     */
 
     this.data.setTimedomainData( audioData.timedomainData );
     this.data.setFrequenciesData( audioData.frequencyData );

@@ -22,22 +22,25 @@ import { HUD } from './hud/hud-controller';
 import { Stats } from './tools/stats';
 import { GUI } from './tools/gui';
 import UserControls from './user-controls';
+import appConfig from './config/app.config';
 
 
 // Size of the fft transform performed on audio stream
 const FFT_SIZE = 512;
 
-// Volume of the source
-const VOLUME = 0.2;
-
+// first we want to stop the application until the user has selected an input
 let userSelection = new UserSelection( (selectionType, info) => {
 
+  // we start to load everything
   let loader = new Loader();
 
-  // 1- we create the components
+  // 1- we create the audio components required for analysis
   let audiosource = new AudioSource();
-  let audiostream = new AudioStream( audiosource, FFT_SIZE, VOLUME );
+  let audiostream = new AudioStream( audiosource, FFT_SIZE, appConfig.volume );
   let audioAnalyser = new AudioAnalyser( audiostream.getBufferSize() );
+
+  // We set up the volume control
+  UserControls[0][1].callback = (value) => { audiostream.setVolume(value); };
 
   // Visual informations on the analysed data
   let visuHelper = new AnalysedDataVisualizer();
@@ -99,34 +102,3 @@ let userSelection = new UserSelection( (selectionType, info) => {
   }
 
 });
-
-// handles the library loading
-/*let loader = new Loader();
-
-// 1- we create the components
-let audiosource = new AudioSource();
-let audiostream = new AudioStream( audiosource, FFT_SIZE, VOLUME );
-let audioAnalyser = new AudioAnalyser( audiostream.getBufferSize() );
-
-// Visual informations on the analysed data
-let visuHelper = new AnalysedDataVisualizer();
-visuHelper.init();
-
-let startTimer = null,
-    lastFrameTimer = null,
-    deltaTime = null;
-
-let stats = new Stats( Stats.POSITIONS.BOTTOM_RIGHT );
-
-let gui = new GUI( UserControls );
-
-
-audiosource.loadAudioFromFile( './dist/audio/owl.mp3' ).then( ()=>{
-  audiostream.init();
-  audiosource.play();
-  startTimer = new Date();
-  loader.loaded();
-  analysis();
-});*/
-
-

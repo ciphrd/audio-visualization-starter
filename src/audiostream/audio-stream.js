@@ -82,7 +82,7 @@ export class AudioStream
   setVolume( volume )
   {
     this.volume = volume;
-    this.gainNode.gain.value = volume;
+    this.gainNode.gain.setValueAtTime( volume, this.audioContext.currentTime );
   }
 
 
