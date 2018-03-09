@@ -25,6 +25,19 @@ export class GUI
 
 
   /**
+   * hide/show the HUD
+   * @param {boolean} show
+   */
+  toggle( show )
+  {
+    if( show && this.gui.domElement.hasAttribute("hidden") )
+      this.gui.domElement.removeAttribute("hidden");
+    else if( !show )
+      this.gui.domElement.setAttribute("hidden", true);
+  }
+
+
+  /**
    * Parse the controls, from user-controls, to set up the dat.gui
    */
   parseControls( gui, controls )

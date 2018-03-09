@@ -44,10 +44,12 @@ export class UserSelection
     this.domElement.setAttribute('id', "user-selection");
     this.domElement.innerHTML = `
     <div class="track-selection">
-      <div class="top-info">Select the track you'd wish to visualize</div>
+      <div class="top-info">Select the track you'd wish to visualize<br>or drop an audio file into the window</div>
       <div class="tracks"></div>
-    </div>
-    <div class="bottom-infos">During the visualization, you can toggle the HUD by pressing H</div>`;
+    </div>`;
+
+    if( AppConfig.hudToggleKey != false )
+      this.domElement.innerHTML+= `<div class="bottom-infos">During the visualization, you can toggle the HUD by pressing ${AppConfig.hudToggleKey.toUpperCase()}</div>`;
 
     this.domElement.ondragenter = (e) => { e.preventDefault(); };
     this.domElement.ondragover = (e) => { e.preventDefault(); };

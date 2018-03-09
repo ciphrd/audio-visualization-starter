@@ -18,6 +18,7 @@ import { AudioStream } from './audiostream/audio-stream';
 import { AudioAnalyser } from './audioanalysis/audio-analyser';
 import { AnalysedDataVisualizer } from './audioanalysis/utility/analysed-data-visualizer';
 import { Loader } from './loader/loader';
+import { HUD } from './hud/hud-controller';
 import { Stats } from './tools/stats';
 import { GUI } from './tools/gui';
 import UserControls from './user-controls';
@@ -45,10 +46,12 @@ let userSelection = new UserSelection( (selectionType, info) => {
   let startTimer = null,
       lastFrameTimer = null,
       deltaTime = null;
-
+  
+  let hud = new HUD();
   let stats = new Stats( Stats.POSITIONS.BOTTOM_RIGHT );
-
   let gui = new GUI( UserControls );
+  hud.add(stats);
+  hud.add(gui);
 
   switch( selectionType )
   {

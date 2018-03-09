@@ -36,6 +36,20 @@ export class Stats
     if( AppConfig.showloginfos ) console.log(`Stats initiliazed\n------------`);
   }
 
+
+  /**
+   * hide/show the HUD
+   * @param {boolean} show
+   */
+  toggle( show )
+  {
+    if( show && this.stats.domElement.hasAttribute("hidden") )
+      this.stats.domElement.removeAttribute("hidden");
+    else if( !show )
+      this.stats.domElement.setAttribute("hidden", true);
+  }
+
+
   /**
    * Positions
    */
