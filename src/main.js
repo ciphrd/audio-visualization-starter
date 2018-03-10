@@ -22,7 +22,7 @@ import { HUD } from './hud/hud-controller';
 import { Stats } from './tools/stats';
 import { GUI } from './tools/gui';
 import UserControls from './user-controls';
-import appConfig from './config/app.config';
+import AppConfig from './config/app.config';
 
 
 // Size of the fft transform performed on audio stream
@@ -36,7 +36,7 @@ let userSelection = new UserSelection( (selectionType, info) => {
 
   // 1- we create the audio components required for analysis
   let audiosource = new AudioSource();
-  let audiostream = new AudioStream( audiosource, FFT_SIZE, appConfig.volume );
+  let audiostream = new AudioStream( audiosource, FFT_SIZE, AppConfig.volume );
   let audioAnalyser = new AudioAnalyser( audiostream.getBufferSize() );
 
   // We set up the volume control
@@ -77,6 +77,7 @@ let userSelection = new UserSelection( (selectionType, info) => {
     if( selectionType != UserSelection.LOAD_TYPE.INPUT_MICROPHONE )
       audiosource.play();
     startTimer = new Date();
+    lastFrameTimer = startTimer;
     loader.loaded();
     analysis();
   }

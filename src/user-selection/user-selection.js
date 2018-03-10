@@ -97,8 +97,6 @@ export class UserSelection
     return new Promise( (resolve) => {
       setTimeout(()=>{
         this.domElement.remove();
-      }, 1100);
-      setTimeout(()=>{
         resolve();
       }, 800);
     })
