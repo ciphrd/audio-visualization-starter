@@ -7,4 +7,4 @@ This project was created to provide a powerful and flexible solution to creative
 * [3D fractals "dive-in", based on Barry Martin's Hopalong Orbits Visualizer](http://crespy-baptiste.com/repo/fractals-dive-in/)
 
 This is what you will get if you run this project as it is right now:
-
+[Audio visualisation starter](http://crespy-baptiste.com/repo/audio-visualization-starter/)
