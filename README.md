@@ -5,6 +5,8 @@ This project was created to provide a powerful and flexible solution to creative
 * [A simple 2D canvas visualizer](http://crespy-baptiste.com/repo/simple-visualizer/)
 * [2D particles reacting to a beat](http://crespy-baptiste.com/repo/2d-particles-booming/)
 * [3D fractals "dive-in", based on Barry Martin's Hopalong Orbits Visualizer](http://crespy-baptiste.com/repo/fractals-dive-in/)
+* [3D creepy head](http://crespy-baptiste.com/repo/creepy-head)
 
 This is what you will get if you run this project as it is right now:
 [Audio visualisation starter](http://crespy-baptiste.com/repo/audio-visualization-starter/)
+

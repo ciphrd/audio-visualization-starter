@@ -1,3 +1,6 @@
 * lowpass / high pass beat detection 
 * régler cette putain de variable d'environnement
-* interface interaaction utilisateur
+
+* ajouter un bouton / commande plein écran (voir message qui fade out au début)
+* ajouter un moyen de charger une playliste youtube / soundcould
+* volume effet sur l'énergie

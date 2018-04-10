@@ -1,7 +1,7 @@
 import config from '../config/app.config';
 
 /**
- * \brief Loads audio from a source
+ * Loads audio from a source
  * The source can only be, for now, a file or a microphone
  * Relies on the web audio API
  * [https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API]
