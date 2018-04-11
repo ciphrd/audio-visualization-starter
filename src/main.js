@@ -69,6 +69,10 @@ let userSelection = new UserSelection( (selectionType, info) => {
     case UserSelection.LOAD_TYPE.INPUT_FILE:
       audiosource.loadAudioFromFile( info ).then(init);
       break;
+    
+    case UserSelection.LOAD_TYPE.SOUNDCLOUD:
+      audiosource.getStreamFromSoundcloud( info ).then(init);
+      break;
   }
 
   function init()

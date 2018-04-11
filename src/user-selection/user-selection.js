@@ -28,7 +28,10 @@ export class UserSelection
       });
       this.loadCovers().then(()=>{ this.setupSelection(); });
 
-    })
+    });
+
+    // the url provider type
+    this.urlState = undefined;
   }
 
 
@@ -44,9 +47,17 @@ export class UserSelection
     this.domElement.setAttribute('id', "user-selection");
     this.domElement.innerHTML = `
     <div class="track-selection">
+      <div class="cover"></div>
       <div class="top-info">Select the track you'd wish to visualize<br>or drop an audio file into the window</div>
+      <div id="url-provider" class="closed">
+        <input type="text" id="url-input"><!--
+     --><div class="arrow">
+          <div class="arrow-icon" style="background-image: url(./dist/img/right-arrow.svg);"></div>
+        </div>
+      </div>
       <div class="tracks"></div>
-    </div>`;
+    </div>
+    <div class="cover"></div>`;
 
     if( AppConfig.hudToggleKey != false )
       this.domElement.innerHTML+= `<div class="bottom-infos">During the visualization, you can toggle the HUD by pressing ${AppConfig.hudToggleKey.toUpperCase()}</div>`;
@@ -59,6 +70,7 @@ export class UserSelection
       this.dropHandler(e); 
     };
     
+    // Library files element
     this.files.forEach( (file) => {
       let tracks = this.domElement.getElementsByClassName("tracks")[0];
       let track = document.createElement("div");
@@ -74,6 +86,7 @@ export class UserSelection
       })
     });
 
+    // Microphone element
     let micElem = document.createElement("div");
     micElem.setAttribute("class", "track microphone");
     micElem.innerHTML = `<div class="icon image" style="background-image: url(./dist/img/microphone.svg);"></div><div class="info-text">Use microphone as input</div>`;
@@ -82,7 +95,109 @@ export class UserSelection
     })
     this.domElement.getElementsByClassName("tracks")[0].appendChild(micElem);
 
+    // Soundcloud element 
+    let soundcloudElem = document.createElement("div");
+    soundcloudElem.setAttribute("class", "track soundcloud");
+    soundcloudElem.innerHTML = `<div class="icon image" style="background-image: url(./dist/img/soundcloud.svg);"></div><div class="info-text">Soundcloud track/playlist</div>`;
+    soundcloudElem.addEventListener( "click", () => {
+      this.urlState = UserSelection.URL_TYPE.SOUNDCLOUD;
+      this.openUrlInterface( "https://soundcloud.com/bookboy-860860771/sets/techno-indus" );
+    });
+    this.domElement.getElementsByClassName("tracks")[0].appendChild( soundcloudElem );
+
     document.body.appendChild( this.domElement );
+
+    // the covers listeners
+    let covers = document.getElementsByClassName("cover");
+    for( let c = 0; c < covers.length; c++ )
+    {
+      covers[c].addEventListener( "click", () => {
+        this.closeUrlInterface();
+      });
+    }
+
+    // the inputs listeners
+    document.getElementById("url-input").addEventListener( "keydown", (event) => {
+      if( event.keyCode === 13 )
+        this.loadUrl( this.getUrl() );
+    });
+
+    this.domElement.getElementsByClassName("arrow")[0].addEventListener( "click", () => {
+      this.loadUrl( this.getUrl() );
+    });
+  }
+
+
+  /**
+   * Open the interface where the user can enter a soundcloud url
+   * @param {string=} placeholder the text in the input 
+   */
+  openUrlInterface( placeholder = "" )
+  {
+    // first the cover elements
+    let covers = document.getElementsByClassName("cover");
+    for( let c = 0; c < covers.length; c++ )
+    {
+      let item = covers.item(c);
+      item.classList.remove("closed");
+      item.classList.add("opened");
+    }
+
+    let elem = document.getElementById("url-provider");
+    elem.className = "opened";
+
+    // events for sending the url 
+    let input = document.getElementById("url-input");
+    input.value = placeholder;
+    input.focus();
+  }
+
+
+  /**
+   * @returns {string} the url from the input 
+   */
+  getUrl()
+  {
+    return document.getElementById("url-input").value;
+  }
+
+  
+  /**
+   * Given the url state, loads the corresponding module 
+   * @param {string} url the url to load
+   */
+  loadUrl( url )
+  {
+    this.closeUrlInterface();
+
+    if( typeof this.urlState !== "undefined" )
+    {
+      switch( this.urlState )
+      {
+        case UserSelection.URL_TYPE.SOUNDCLOUD:
+          this.loadSoundcloud( url );
+          break;
+      }
+    }
+  }
+
+
+  /**
+   * Closes the interface
+   */
+  closeUrlInterface()
+  {
+    // first the cover elements
+    let covers = document.getElementsByClassName("cover");
+    for( let c = 0; c < covers.length; c++ )
+    {
+      let item = covers.item(c);
+      item.classList.remove("opened");
+      item.classList.add("closed");
+    }
+
+    let elem = document.getElementById("url-provider");
+    elem.className = "closed";
   }
 
 
@@ -136,6 +251,19 @@ export class UserSelection
   {
     this.clearSelection().then( () => {
       this.callback( UserSelection.LOAD_TYPE.INPUT_FILE, file );
+    });
+  }
+
+
+  /**
+   * Called when user provides an url to fetch
+   * maybe check here if the url is valid?
+   * @param {string} url the url to check
+   */
+  loadSoundcloud( url )
+  {
+    this.clearSelection().then( () => {
+      this.callback( UserSelection.LOAD_TYPE.SOUNDCLOUD, url );
     });
   }
 
@@ -224,10 +352,25 @@ export class UserSelection
     });
   }
 
+
+  /**
+   * The type of the selection that can be made by the user
+   */
   static get LOAD_TYPE()
   {
     return {
-      LIBRARY_FILE: 0, INPUT_FILE: 1, INPUT_MICROPHONE: 2
+      LIBRARY_FILE: 0, INPUT_FILE: 1, INPUT_MICROPHONE: 2, SOUNDCLOUD: 3
+    }
+  }
+
+
+  /**
+   * The different states of the url provider
+   */
+  static get URL_TYPE()
+  {
+    return {
+      SOUNDCLOUD: 0
     }
   }
 

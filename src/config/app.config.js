@@ -19,6 +19,9 @@ export default {
   hudDisplayed: true,
 
   // Volume of the audio at the beginning
-  volume: 0.5
+  volume: 0.5,
+
+  // the client id for the soundcloud api 
+  soundcloudClientId: "ifLq1FIbS6X3sUVhY2k706ZjmmpaOaYW"
 
 };

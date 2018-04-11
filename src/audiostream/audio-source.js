@@ -1,8 +1,11 @@
 import config from '../config/app.config';
+import SoundCloud from 'soundcloud-audio';
+
 
 /**
  * Loads audio from a source
- * The source can only be, for now, a file or a microphone
+ * The source can either be a file from the user input, a file from 
+ * the library, a microphone or a soundcloud url
  * Relies on the web audio API
  * [https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API]
  */
@@ -11,9 +14,28 @@ export class AudioSource
   /** */
   constructor()
   {
+    /**
+     * @type {AudioContext}
+     */
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
     this.source = false;
-    this.sourceType = "";
+    this.sourceType = undefined;
+
+    // these are used to store the soundcloud loader
+    this.scPlayer = undefined;
+  }
+
+
+  /**
+   * The type of the audio source
+   */
+  static get SOURCE_TYPE()
+  {
+    return {
+      FILE: 0,
+      MICROPHONE: 1,
+      SOUNDCLOUD_STREAM: 2
+    }
   }
 
 
@@ -32,7 +54,7 @@ export class AudioSource
         this.audioContext.decodeAudioData( audioData ).then( (buffer) => {
           this.source = this.audioContext.createBufferSource();
           this.source.buffer = buffer;
-          this.sourceType = "audiofile";
+          this.sourceType = AudioSource.SOURCE_TYPE.FILE;
           if( config.showloginfos ) console.log( `Audio from file ${filepath} loaded\n------------` );
           resolve();
         }).catch( (error) => {
@@ -62,7 +84,7 @@ export class AudioSource
         this.audioContext.decodeAudioData(data).then( (buffer) => {
           this.source = this.audioContext.createBufferSource();
           this.source.buffer = buffer;
-          this.sourceType = "audiofile";
+          this.sourceType = AudioSource.SOURCE_TYPE.FILE;
           if( config.showloginfos ) console.log( `Audio from file loaded\n------------` );
           resolve();
         });
@@ -94,7 +116,7 @@ export class AudioSource
       {
         navigator.mediaDevices.getUserMedia( { audio: true } ).then( (stream) => {
           this.source = this.audioContext.createMediaStreamSource( stream );
-          this.sourceType = "microphone";
+          this.sourceType = AudioSource.SOURCE_TYPE.MICROPHONE;
           if( config.showloginfos ) console.log( "Audio stream is coming from microphone" );
           resolve();
         }).catch( (error) => {
@@ -107,6 +129,31 @@ export class AudioSource
         if( config.showerrors ) console.log( 'getUserMedia is not supported on this browser');
         reject( "getUserMedia is not supported on this browser" );
       }
+    });
+  }
+
+
+  /**
+   * Read stream from soundcloud url, using soundcloud-audio 
+   * [https://github.com/voronianski/soundcloud-audio.js]
+   * @returns {Promise} A promise that resolves if the stream can be loaded
+   * @param {string} url the soundcloud url to fetch
+   */
+  getStreamFromSoundcloud( url )
+  {
+    return new Promise( (resolve, reject) => {
+
+      this.scPlayer = new SoundCloud( config.soundcloudClientId );
+
+      this.scPlayer.resolve( url, (playlist) => {
+
+        this.scPlayer.audio.crossOrigin = "anonymous";
+        this.source = this.audioContext.createMediaElementSource( this.scPlayer.audio );
+        this.sourceType = AudioSource.SOURCE_TYPE.SOUNDCLOUD_STREAM;
+        resolve();
+
+      })
+
     });
   }
 
@@ -139,18 +186,21 @@ export class AudioSource
    * @param {number=} when When the the audio will start to play, in s (optional)
    * @param {number=} offset Offset on the sound to play, in s (optional)
    */
-  play( when, offset )
+  play( when = 0, offset = 0 )
   {
-    if( typeof(when) == "undefined" )
-      when = 0;
-    if( typeof(offset) == "undefined" )
-      offset = 0;
-
-    if( this.sourceType == "audiofile" )
-      this.source.start(when, offset);
-    else 
+    switch( this.sourceType )
     {
-      if( config.showerrors ) console.error( `Couldn't start the audio source. Source is a microphone.` );
+      case AudioSource.SOURCE_TYPE.FILE:
+        this.source.start(when, offset);
+        break;
+      
+      case AudioSource.SOURCE_TYPE.SOUNDCLOUD_STREAM:
+        this.scPlayer.play();
+        break;
+      
+      case AudioSource.SOURCE_TYPE.MICROPHONE:
+        if( config.showerrors ) console.error( `Couldn't start the audio source. Source is a microphone.` );
+        break;
     }
   }
 

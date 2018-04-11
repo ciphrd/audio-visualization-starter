@@ -74,11 +74,13 @@ body
 #user-selection .track-selection .top-info
 {
   font-size: 30px;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
   -webkit-transform: translateY(0);
       -ms-transform: translateY(0);
           transform: translateY(0);
   opacity: 1;
+  position: relative;
+  z-index: 1;
 }
 
 #user-selection.hide .track-selection .top-info, #user-selection .track-selection .top-info.hide
@@ -98,6 +100,98 @@ body
   -webkit-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+  z-index: 20;
+}
+
+#user-selection .track-selection #url-provider 
+{
+  height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: 0;
+  transition: height 0.5s, margin-top 0.5s, margin-bottom 0.5s;
+  position: relative;
+  z-index: 20;
+}
+
+#user-selection .cover
+{
+  background: #000;
+  position: absolute;
+  top: 0; left: 0;
+  bottom: 0; right: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+#user-selection .cover.opened 
+{
+  opacity: 0.7;
+  pointer-events: all;
+}
+
+#user-selection .track-selection #url-provider.opened
+{
+  height: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+#user-selection .track-selection #url-provider input 
+{
+  display: inline-block;
+  height: 40px;
+  width: 70%;
+  outline: none;
+  border: none;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  vertical-align: top;
+  padding: 0 15px 0 15px;
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  color: #333333;
+}
+
+#user-selection .track-selection #url-provider .arrow
+{
+  display: inline-block;
+  height: 40px;
+  width: 70px;
+  background: #fff;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  line-height: 0;
+  vertical-align: top;
+  text-align: center;
+  cursor: pointer;
+}
+
+#user-selection .track-selection #url-provider .arrow .arrow-icon
+{
+  height: 20px;
+  width: 20px;
+  background-size: cover;
+  line-height: 0;
+  margin-top: 10px;
+  margin-left: 40px; 
+  opacity: 0.5;
+  transition: opacity 0.5s;
+}
+
+#user-selection .track-selection #url-provider .arrow:hover .arrow-icon
+{
+  opacity: 0.8;
 }
 
 #user-selection .track-selection .tracks
@@ -106,6 +200,9 @@ body
       -ms-transform: translateY(0);
           transform: translateY(0);
   opacity: 1;
+  margin-top: 25px;
+  position: relative;
+  z-index: 1;
 }
 
 #user-selection .track-selection .tracks.hide, #user-selection.hide .track-selection .tracks
@@ -187,6 +284,18 @@ body
 }
 
 #user-selection .track-selection .tracks .track.microphone .icon 
+{
+  background-size: 50px 50px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+#user-selection .track-selection .tracks .track.soundcloud .info-text
+{
+  margin-top: 10px;
+}
+
+#user-selection .track-selection .tracks .track.soundcloud .icon 
 {
   background-size: 50px 50px;
   background-position: center center;
