@@ -48,6 +48,7 @@ export class AnalysedDataVisualizer
   /**
    * Add a canvas to the body
    * This canvas will be used by the draw() function
+   * @returns {Promise} a promise that resolves when the canvas are initialized
    */
   init()
   {
@@ -56,7 +57,11 @@ export class AnalysedDataVisualizer
     this.canvas.setAttribute( "height", 1024 );
     document.body.appendChild( this.canvas );
     this.context = this.canvas.getContext( "2d" );
-    if( AppConfig.showloginfos ) console.log( `Visualizer initialized\n------------` );
+    
+    return new Promise( resolve => {
+      if( AppConfig.showloginfos ) console.log( `Visualizer initialized\n------------` );
+      resolve();
+    });
   }
 
 
