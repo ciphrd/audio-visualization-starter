@@ -59,3 +59,6 @@ typings/
 
 # todo list
 TODO
+
+# full app.js 
+dist/app.js
