@@ -1,6 +1,7 @@
 import config from '../config/app.config';
 
 import { AudioSource } from './audio-source';
+import AudioSourceType from './audio-source-type';
 import { AudioData } from './audio-data';
 
 
@@ -54,11 +55,27 @@ export class AudioStream
     }
     else 
     {
-      this.sourceNode.connect( this.analyserNode );
-      this.analyserNode.connect( this.gainNode );
-      //this.filterNode.connect( this.analyserNode );
-      if( this.audioSource.isThereFeedback() )
-        this.gainNode.connect( this.audioContext.destination );
+      // if the audio come from the mic, we have to do not use a gain node 
+      if( this.audioSource.sourceType === AudioSourceType.MICROPHONE )
+      {
+        this.sourceNode.connect( this.analyserNode );
+
+        if( this.audioSource.isThereFeedback() )
+        {
+          this.analyserNode.connect( this.audioContext.destination );
+        }
+      }
+      else 
+      {
+        this.sourceNode.connect( this.analyserNode );
+        this.analyserNode.connect( this.gainNode );
+        //this.filterNode.connect( this.analyserNode );
+        if( this.audioSource.isThereFeedback() )
+        {
+          this.gainNode.connect( this.audioContext.destination );
+        }
+      }
+      
       if( config.showloginfos ) console.log( `AudioStream class initialized\n------------` );
     }
   }

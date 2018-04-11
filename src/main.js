@@ -29,6 +29,7 @@ import { GUI } from './tools/gui';
 import UserControls from './user/user-controls';
 import AppConfig from './config/app.config';
 import AnalyserConfig from './config/analyser.config';
+import audioSourceType from './audiostream/audio-source-type';
 
 
 // first we want to stop the application until the user has selected an input
@@ -38,7 +39,7 @@ let userSelection = new UserSelection( (selectionType, info) => {
   let loader = new Loader();
 
   // 1- we create the audio components required for analysis
-  let audiosource = new AudioSource(/* selectionType, info*/);
+  let audiosource = new AudioSource();
   let audiostream = new AudioStream( audiosource, AnalyserConfig.options.fftSize, AppConfig.volume );
   let audioAnalyser = new AudioAnalyser( audiostream.getBufferSize() );
 
@@ -56,29 +57,12 @@ let userSelection = new UserSelection( (selectionType, info) => {
   hud.add(stats);
   hud.add(gui);
 
-  switch( selectionType )
-  {
-    case AudioSourceType.FILE_LIBRARY:
-      audiosource.loadAudioFromLibrary( info ).then(init);
-      break;
-
-    case AudioSourceType.MICROPHONE:
-      audiosource.getStreamFromMicrophone().then(init);
-      break;
-    
-    case AudioSourceType.FILE_USER:
-      audiosource.loadAudioFromFile( info ).then(init);
-      break;
-    
-    case AudioSourceType.SOUNDCLOUD:
-      audiosource.getStreamFromSoundcloud( info ).then(init);
-      break;
-  }
+  audiosource.loadAudioSource( selectionType, info ).then( init );
 
   function init()
   {
     audiostream.init();
-    if( selectionType != AudioSourceType.MICROPHONE )
+    if( selectionType !== AudioSourceType.MICROPHONE )
       audiosource.play();
     startTimer = new Date();
     lastFrameTimer = startTimer;

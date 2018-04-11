@@ -1,4 +1,5 @@
 import config from '../config/app.config';
+import AudioSourceType from './audio-source-type';
 import SoundCloud from 'soundcloud-audio';
 
 
@@ -27,15 +28,36 @@ export class AudioSource
 
 
   /**
-   * The type of the audio source
+   * This method provides a generic way of loading an audio source
+   * @param {number} sourceType The ./audio-stream/audio-source-type type of audio source
+   * @param {any} info Informations given by the user selection
    */
-  static get SOURCE_TYPE()
+  loadAudioSource( sourceType, info )
   {
-    return {
-      FILE: 0,
-      MICROPHONE: 1,
-      SOUNDCLOUD_STREAM: 2
-    }
+    this.sourceType = sourceType;
+
+    return new Promise( (resolve, reject) => {
+
+      switch( sourceType )
+      {
+        case AudioSourceType.FILE_LIBRARY:
+          this.loadAudioFromLibrary( info ).then(resolve).catch(reject);
+          break;
+
+        case AudioSourceType.MICROPHONE:
+          this.getStreamFromMicrophone().then(resolve).catch(reject);
+          break;
+        
+        case AudioSourceType.FILE_USER:
+          this.loadAudioFromFile( info ).then(resolve).catch(reject);
+          break;
+        
+        case AudioSourceType.SOUNDCLOUD:
+          this.getStreamFromSoundcloud( info ).then(resolve).catch(reject);
+          break;
+      }
+
+    });
   }
 
 
@@ -54,7 +76,6 @@ export class AudioSource
         this.audioContext.decodeAudioData( audioData ).then( (buffer) => {
           this.source = this.audioContext.createBufferSource();
           this.source.buffer = buffer;
-          this.sourceType = AudioSource.SOURCE_TYPE.FILE;
           if( config.showloginfos ) console.log( `Audio from file ${filepath} loaded\n------------` );
           resolve();
         }).catch( (error) => {
@@ -84,7 +105,6 @@ export class AudioSource
         this.audioContext.decodeAudioData(data).then( (buffer) => {
           this.source = this.audioContext.createBufferSource();
           this.source.buffer = buffer;
-          this.sourceType = AudioSource.SOURCE_TYPE.FILE;
           if( config.showloginfos ) console.log( `Audio from file loaded\n------------` );
           resolve();
         });
@@ -102,21 +122,15 @@ export class AudioSource
    * @returns {Promise} A promise that resolves if the stream from the microphone can be loaded,
    * rejected if getUserMedia is not supported or if access to microphone is denied by the user
    */
-  getStreamFromMicrophone( audioFeedback )
+  getStreamFromMicrophone( audioFeedback = false )
   {
     if( config.showloginfos ) console.log( 'Setting up microphone' );
-
-    if( typeof(audioFeedback) == "undefined" ) 
-      this.audioFeedback = false;
-    else 
-      this.audioFeedback = audioFeedback;
 
     return new Promise( (resolve, reject) => {
       if( navigator.mediaDevices )
       {
         navigator.mediaDevices.getUserMedia( { audio: true } ).then( (stream) => {
           this.source = this.audioContext.createMediaStreamSource( stream );
-          this.sourceType = AudioSource.SOURCE_TYPE.MICROPHONE;
           if( config.showloginfos ) console.log( "Audio stream is coming from microphone" );
           resolve();
         }).catch( (error) => {
@@ -149,7 +163,6 @@ export class AudioSource
 
         this.scPlayer.audio.crossOrigin = "anonymous";
         this.source = this.audioContext.createMediaElementSource( this.scPlayer.audio );
-        this.sourceType = AudioSource.SOURCE_TYPE.SOUNDCLOUD_STREAM;
         resolve();
 
       })
@@ -190,15 +203,16 @@ export class AudioSource
   {
     switch( this.sourceType )
     {
-      case AudioSource.SOURCE_TYPE.FILE:
+      case AudioSourceType.FILE_USER:
+      case AudioSourceType.FILE_LIBRARY:
         this.source.start(when, offset);
         break;
       
-      case AudioSource.SOURCE_TYPE.SOUNDCLOUD_STREAM:
+      case AudioSourceType.SOUNDCLOUD:
         this.scPlayer.play();
         break;
       
-      case AudioSource.SOURCE_TYPE.MICROPHONE:
+      case AudioSourceType.MICROPHONE:
         if( config.showerrors ) console.error( `Couldn't start the audio source. Source is a microphone.` );
         break;
     }
@@ -210,7 +224,7 @@ export class AudioSource
    */
   isThereFeedback()
   {
-    if( this.sourceType == "microphone" )
+    if( this.sourceType === AudioSourceType.MICROPHONE )
       return this.audioFeedback;
     else 
       return true;
