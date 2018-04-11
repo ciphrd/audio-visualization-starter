@@ -49,4 +49,32 @@ export default [
     },
   ],
 
+  [
+    "Multiband peak detection",
+
+    {
+      object: AnalyserConfig.options.multibandPeakDetection.options,
+      property: "threshold",
+      min: 0, max: 6, step: 0.1
+    },
+
+    {
+      object: AnalyserConfig.options.multibandPeakDetection.options,
+      property: "ignoreTime",
+      min: 0, max: 5000, step: 10
+    },
+
+    {
+      object: AnalyserConfig.options.multibandPeakDetection.options,
+      property: "energyPersistence",
+      min: 300, max: 6000, step: 10
+    },
+
+    {
+      object: AnalyserConfig.options.multibandPeakDetection.options,
+      property: "peakPersistency",
+      min: 0, max: 2000, step: 10
+    },
+  ],
+
 ];

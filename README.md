@@ -2,8 +2,7 @@
 
 This project was created to provide a powerful and flexible solution to creative audio visualization experiments. You may want to use it if you're only focused on creating visuals and you don't want to invest time in beat detection algorithms. It bundles a few modules that allows you to only focus on interpreting analysed audio data. Here are examples that I made using this project as a core:
 
-* [A simple 2D canvas visualizer](http://crespy-baptiste.com/repo/simple-visualizer/)
-* [2D particles reacting to a beat](http://crespy-baptiste.com/repo/2d-particles-booming/)
+* [A simple 2D canvas visualizer, without user-selection at the beginning](http://crespy-baptiste.com/repo/simple-visualizer/)
 * [3D fractals "dive-in", based on Barry Martin's Hopalong Orbits Visualizer](http://crespy-baptiste.com/repo/fractals-dive-in/)
 * [3D creepy head](http://crespy-baptiste.com/repo/creepy-head)
 * [Dark metaballs](http://crespy-baptiste.com/repo/dark-metaballs/)
@@ -69,12 +68,7 @@ The loader provides a visual loading screen in a (subjective) beautiful way. Onc
 
 ### The user selection
 
-Because it's more interesting in an experiment to leave to the user more options, especially when it comes to the audio source, I made a user-selection module. This module allows you in one line to create a first step on the application that will wait for the user to make a selection from
-* An audio file from a library you created for him
-* An audio file from its computer
-* His microphone as input 
-* A soundcloud url
-* I will add some more, but for now this is already good I think. Let me know if you want more
+Because it's more interesting in an experiment to leave to the user more options, especially when it comes to the audio source, I made a user-selection module. This module allows you in one line to create a first step on the application that will wait for the user to make a selection from different sources I listed before.
 
 Regardless on what the user selected as input, you will load the audio the same way.
 
@@ -219,7 +213,7 @@ export default
 
 The whole file is not displayed here, because it would be useless to list all the settings, they are already commented. **However, I want you to understand how this config works.** First, you can see the config for the peakDetection algorithm, then the multibandPeakDetection algorithm, and a **returns** option with a list of booleans. Because in some situations you don't need all the multiband informations, or even the peak history...etc, this is where you can disable them. If you're not looking for crictical optimisations, leave the file as it is. But if you want to save CPU usage, you want to think about which information you need and which you don't. 
 
-*What happens if I ask for multibandPeak but I have disabled the algorithm with the boolean just above ?* This is why a checkConfig flag exists in the global settings. Il will look at this config file and check if it's valid. If it's not, it prints an error to the console. Then you'll see.
+*What happens if I ask for multibandPeak but I have disabled the algorithm with the boolean just above ?* This is why a checkConfig flag exists in the global settings. It will look at this config file and check if it's valid. If it's not, it prints an error to the console. Then you'll see.
 
 **More settings might be added in the future**, so if those file do not look the same as they are here, it only means I didn't update this part. But the logic will remain the same, and settings will be commented as they actually are.
 
@@ -330,7 +324,7 @@ I then decided to go through the whole process myself. Understand the Math behin
 
 I thought about a good way to introduce this project in a few lines, but I think there is none. Either I was leaving you with a few informations on how to use this, either I was going for a full-Terminator doc with as much infos as possible for you tu use this. The doc is not yet complete, but I did my best to give you a place where you can find informations on how to use this project. I'm not even sure somebody went through all this shit or will ever see this project. But ffs, if I have at least helped 1 person, I will be happy.
 
-I am opened to discuss about Music Visualization, this starter kit project, or whatever you want, feel free to contact me (but no nudes, please). You can do through my website, and take a look at my work in the meantime if you want to: [http://crespy-baptiste.com](http://crespy-baptiste.com).
+I am opened to discuss about Music Visualization, this starter kit project, or whatever you want, feel free to contact me (but no nudes, please). You can do so using my website, and take a look at my work in the meantime if you want to: [http://crespy-baptiste.com](http://crespy-baptiste.com).
 
 # Credits 
 
