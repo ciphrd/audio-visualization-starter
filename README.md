@@ -1,6 +1,6 @@
 # Audio visualization starter kit
 
-This project was created to provide a powerful and flexible solution to creative audio visualization applications. You may want to use it if you're only focused on creating visuals and you don't want to invest time in beat detection algorithms. It bundles a few modules that allows you to only focus on interpreting analysed audio data. Here are examples that I made using this project as a core:
+This project was created to provide a powerful and flexible solution to creative audio visualization experiments. You may want to use it if you're only focused on creating visuals and you don't want to invest time in beat detection algorithms. It bundles a few modules that allows you to only focus on interpreting analysed audio data. Here are examples that I made using this project as a core:
 
 * [A simple 2D canvas visualizer](http://crespy-baptiste.com/repo/simple-visualizer/)
 * [2D particles reacting to a beat](http://crespy-baptiste.com/repo/2d-particles-booming/)
@@ -16,7 +16,7 @@ This is what you will get if you run this project as it is right now:
 
 ![Preview](http://crespy-baptiste.com/repo/audio-visualization-starter/preview.jpg)
 
-What you can see here is the Visual Helper, it shows you visual informations on what the algorithm is doing in the background. You will only use this as a visual guidance if you want to understand how the peak detection works.
+What you can see here is the Visual Helper, it gives you feedback visual informations on what the algorithm is doing in the background. You will only use this as a visual guidance if you want to understand how the peak detection works.
 
 The algorithm uses the Web Audio API and provides an abstraction to audio related stuff. You won't need to **know** how the audio is loaded and how it's processed, you will only need to learn how to process the already-analysed informations. Let's take a look on the data computed by the algorithms.
 

@@ -12,7 +12,7 @@
  * 5- In the main loop, follow the example to see how data cycle is processed
  */
 
-import { UserSelection } from './user-selection/user-selection';
+import { UserSelection } from './user/user-selection';
 import { AudioSource } from './audiostream/audio-source';
 import { AudioStream } from './audiostream/audio-stream';
 import { AudioAnalyser } from './audioanalysis/audio-analyser';
@@ -21,7 +21,7 @@ import { Loader } from './loader/loader';
 import { HUD } from './hud/hud-controller';
 import { Stats } from './tools/stats';
 import { GUI } from './tools/gui';
-import UserControls from './user-controls';
+import UserControls from './user/user-controls';
 import AppConfig from './config/app.config';
 
 
@@ -35,7 +35,7 @@ let userSelection = new UserSelection( (selectionType, info) => {
   let loader = new Loader();
 
   // 1- we create the audio components required for analysis
-  let audiosource = new AudioSource();
+  let audiosource = new AudioSource(/* selectionType, info*/);
   let audiostream = new AudioStream( audiosource, FFT_SIZE, AppConfig.volume );
   let audioAnalyser = new AudioAnalyser( audiostream.getBufferSize() );
 

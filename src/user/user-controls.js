@@ -1,5 +1,5 @@
-import AnalyserConfig from './config/analyser.config';
-import AppConfig from './config/app.config';
+import AnalyserConfig from '../config/analyser.config';
+import AppConfig from '../config/app.config';
 
 
 export default [
