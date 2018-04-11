@@ -21,6 +21,9 @@ export default {
   // Volume of the audio at the beginning
   volume: 0.5,
 
+  // This is where the method for the volume control will be programatically set
+  volumeControlCallback: null,
+
   // the client id for the soundcloud api 
   soundcloudClientId: "ifLq1FIbS6X3sUVhY2k706ZjmmpaOaYW"
 

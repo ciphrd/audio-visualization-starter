@@ -16,7 +16,7 @@ export default [
       object: AppConfig,
       property: "volume",
       min: 0, max: 1, step: 0.05,
-      callback: null                // this will be programmatically changed in the main
+      callback: (volume) => { AppConfig.volumeControlCallback(volume); }
     }
   ],
 

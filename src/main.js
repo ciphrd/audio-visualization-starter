@@ -42,9 +42,6 @@ let userSelection = new UserSelection( (selectionType, info) => {
   let audiostream = new AudioStream( audiosource, AnalyserConfig.options.fftSize, AppConfig.volume );
   let audioAnalyser = new AudioAnalyser( audiostream.getBufferSize() );
 
-  // We set up the volume control
-  UserControls[0][1].callback = (value) => { audiostream.setVolume(value); };
-
   // Visual informations on the analysed data
   let visuHelper = new AnalysedDataVisualizer();
   visuHelper.init();

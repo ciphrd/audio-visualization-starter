@@ -27,6 +27,9 @@ export class AudioStream
     this.gainNode = this.audioContext.createGain();
     this.gainNode.gain.setValueAtTime( volume, this.audioContext.currentTime );
 
+    // the volume control callback
+    config.volumeControlCallback = (volume) => { this.setVolume(volume); };
+
     /*this.filterNode = this.audioContext.createBiquadFilter();
     this.filterNode.type = "lowpass";
     this.filterNode.frequency.setValueAtTime( 500, this.audioContext.currentTime );*/
