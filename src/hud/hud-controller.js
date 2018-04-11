@@ -1,4 +1,5 @@
 import AppConfig from '../config/app.config';
+import { HUDElement } from '../tools/hud-element';
 
 
 /**
@@ -6,10 +7,21 @@ import AppConfig from '../config/app.config';
  */
 export class HUD
 {
-  constructor()
+  /**
+   * 
+   * @param {...HUDElement} elements The elements you want to add to the HUD
+   */
+  constructor( ...elements )
   {
-    this.elements = [];
+    /**
+     * @type {Array.<HUDElement>}
+     */
+    this.elements = new Array();
     this.show = AppConfig.hudDisplayed;
+
+    elements.forEach( elem => {
+      this.add(elem);
+    });
 
     document.addEventListener( "keydown", (event) => {
       this.keyDownEvent(event);
@@ -19,7 +31,7 @@ export class HUD
 
   /**
    * Adds an element to the HUD
-   * @param {*} element the element MUST implement the method toggle()
+   * @param {HUDElement} element the element MUST implement the method toggle()
    */
   add( element )
   {
@@ -38,7 +50,7 @@ export class HUD
     {
       event.stopPropagation();
       this.show = !this.show;
-      this.elements.forEach( (elem) => {
+      this.elements.forEach( elem => {
         elem.toggle( this.show );
       })
     }

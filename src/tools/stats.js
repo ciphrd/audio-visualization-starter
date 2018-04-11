@@ -1,17 +1,20 @@
 import StatsJS from 'stats-js';
 import AppConfig from '../config/app.config';
+import { HUDElement } from './hud-element';
 
 
 /**
  * This class provides an abstraction for controlling stats
  */
-export class Stats
+export class Stats extends HUDElement
 {
   /**
    * @param {number=} position 0: top-left / 1: top-right / 2: bottom-left / 3: bottom-right (optional)
    */
   constructor( position )
   {
+    super();
+    
     if( typeof(position) == "undefined" )
       position = 0;
     

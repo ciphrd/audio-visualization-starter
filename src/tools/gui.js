@@ -1,17 +1,20 @@
 import dat from 'dat.gui';
 import AppConfig from '../config/app.config';
+import { HUDElement } from './hud-element';
 
 
 /**
  * This class provides an abstraction for a GUI utilisation
  */
-export class GUI
+export class GUI extends HUDElement
 {
   /**
    * @param {boolean=} closed If the GUI is closed or not (optional)
    */
   constructor( controls, closed )
   {
+    super();
+    
     this.gui = new dat.GUI();
     this.controllers = {};
 

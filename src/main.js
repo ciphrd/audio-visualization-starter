@@ -51,11 +51,8 @@ let userSelection = new UserSelection( (selectionType, info) => {
       lastFrameTimer = null,
       deltaTime = null;
   
-  let hud = new HUD();
   let stats = new Stats( Stats.POSITIONS.BOTTOM_RIGHT );
-  let gui = new GUI( UserControls );
-  hud.add(stats);
-  hud.add(gui);
+  let hud = new HUD( stats, new GUI( UserControls ) );
 
   audiosource.loadAudioSource( selectionType, info ).then( init );
 
