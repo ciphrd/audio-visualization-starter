@@ -23,10 +23,8 @@ import { Stats } from './tools/stats';
 import { GUI } from './tools/gui';
 import UserControls from './user/user-controls';
 import AppConfig from './config/app.config';
+import AnalyserConfig from './config/analyser.config';
 
-
-// Size of the fft transform performed on audio stream
-const FFT_SIZE = 512;
 
 // first we want to stop the application until the user has selected an input
 let userSelection = new UserSelection( (selectionType, info) => {
@@ -36,7 +34,7 @@ let userSelection = new UserSelection( (selectionType, info) => {
 
   // 1- we create the audio components required for analysis
   let audiosource = new AudioSource(/* selectionType, info*/);
-  let audiostream = new AudioStream( audiosource, FFT_SIZE, AppConfig.volume );
+  let audiostream = new AudioStream( audiosource, AnalyserConfig.options.fftSize, AppConfig.volume );
   let audioAnalyser = new AudioAnalyser( audiostream.getBufferSize() );
 
   // We set up the volume control

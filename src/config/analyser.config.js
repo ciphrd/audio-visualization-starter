@@ -9,6 +9,9 @@ export default
    */
   options: {
 
+    // size of the fourrier transform, must be pow of 2 - size of the frequency data will be fft_size/2
+    fftSize: 512,
+
     /**
      * The peak detection algorithm compares the moment energy to the recent average
      * energy of the signal. 
