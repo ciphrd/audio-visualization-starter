@@ -15,6 +15,7 @@ let config =
     publicPath: "/dist/"
   },
   
+  // this following line has to be commented to run the prod build
   devtool: "cheap-module-eval-source-map",
 
   module: 

@@ -9,6 +9,7 @@ export default [
 
   },*/
 
+  // if it's an array, and first parameter is a string, it is considered as a folder
   [
     "Audio settings",
 
@@ -20,7 +21,6 @@ export default [
     }
   ],
 
-  // if it's an array, and first parameter is a string, it is considered as a folder
   [
     "Peak detection",
 

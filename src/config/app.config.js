@@ -12,13 +12,13 @@ export default {
   // If set to true, the analyser will check if the config is properly set
   checkConfig: true,
 
-  // The key to be pressed to show / hide HUD - if set to false huf can't be toggled
+  // The key which has to be pressed to show / hide HUD - if set to false HUD can't be toggled
   hudToggleKey: 'h',
 
   // If the HUD is displayed or not by default 
   hudDisplayed: true,
 
-  // Volume of the audio at the beginning
+  // Volume of the audio, updated by the volume control callback
   volume: 0.5,
 
   // This is where the method for the volume control will be programatically set

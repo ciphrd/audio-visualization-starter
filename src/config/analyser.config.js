@@ -28,10 +28,10 @@ export default
         // the rest of the audio 
         threshold: 1.8,
 
-        // time in ms when a peak is not detectable after one has been detected
+        // time in ms while a peak is not detectable after one has been detected
         ignoreTime: 300,
 
-        // time in ms during energies are compared to the real-time energy value
+        // time in ms while energies are stored and compared to the real-time energy value
         energyPersistence: 2000,
 
         // the time it takes for a peak to go from 1.0 to 0.0
@@ -64,10 +64,10 @@ export default
         // are less enclined to fluctuate
         threshold: 1.2,
 
-        // time in ms when a peak is not detectable after one has been detected
+        // time in ms while a peak is not detectable after one has been detected
         ignoreTime: 300,
 
-        // time in ms during energies are compared to the real-time energy value
+        // time in ms while energies are stored and compared to the real-time energy value
         energyPersistence: 1200,
 
         // the time it takes for a peak to go from 1.0 to 0.0
