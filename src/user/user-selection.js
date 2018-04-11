@@ -1,4 +1,5 @@
 import AppConfig from '../config/app.config';
+import AudioSourceType from '../audiostream/audio-source-type';
 import { Loader } from '../loader/loader';
 
 /**
@@ -225,7 +226,7 @@ export class UserSelection
   loadFile( file )
   {
     this.clearSelection().then( () => {
-      this.callback( UserSelection.LOAD_TYPE.LIBRARY_FILE, `./dist/audio/${file.directory}/${file.filename}` );
+      this.callback( AudioSourceType.FILE_LIBRARY, `./dist/audio/${file.directory}/${file.filename}` );
     });
   }
 
@@ -237,7 +238,7 @@ export class UserSelection
   loadMicrophone()
   {
     this.clearSelection().then( () => {
-      this.callback( UserSelection.LOAD_TYPE.INPUT_MICROPHONE );
+      this.callback( AudioSourceType.MICROPHONE );
     });
   }
 
@@ -250,7 +251,7 @@ export class UserSelection
   loadBuffer( file )
   {
     this.clearSelection().then( () => {
-      this.callback( UserSelection.LOAD_TYPE.INPUT_FILE, file );
+      this.callback( AudioSourceType.FILE_USER, file );
     });
   }
 
@@ -263,7 +264,7 @@ export class UserSelection
   loadSoundcloud( url )
   {
     this.clearSelection().then( () => {
-      this.callback( UserSelection.LOAD_TYPE.SOUNDCLOUD, url );
+      this.callback( AudioSourceType.SOUNDCLOUD, url );
     });
   }
 
@@ -351,18 +352,6 @@ export class UserSelection
       });
     });
   }
-
-
-  /**
-   * The type of the selection that can be made by the user
-   */
-  static get LOAD_TYPE()
-  {
-    return {
-      LIBRARY_FILE: 0, INPUT_FILE: 1, INPUT_MICROPHONE: 2, SOUNDCLOUD: 3
-    }
-  }
-
 
   /**
    * The different states of the url provider

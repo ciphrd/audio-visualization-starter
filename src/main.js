@@ -1,5 +1,9 @@
 /**
  * How does it works 
+ * 
+ * 1- Create a new User Selection
+ *    The callback parameter will be called when the selection is done
+ * 
  * 1- Load audio from a source 
  * 2- Init the audiostream component by providing an audio source 
  *    The audiostream class provides methods to get data from the loaded source
@@ -13,6 +17,7 @@
  */
 
 import { UserSelection } from './user/user-selection';
+import AudioSourceType from './audiostream/audio-source-type';
 import { AudioSource } from './audiostream/audio-source';
 import { AudioStream } from './audiostream/audio-stream';
 import { AudioAnalyser } from './audioanalysis/audio-analyser';
@@ -56,19 +61,19 @@ let userSelection = new UserSelection( (selectionType, info) => {
 
   switch( selectionType )
   {
-    case UserSelection.LOAD_TYPE.LIBRARY_FILE:
+    case AudioSourceType.FILE_LIBRARY:
       audiosource.loadAudioFromLibrary( info ).then(init);
       break;
 
-    case UserSelection.LOAD_TYPE.INPUT_MICROPHONE:
+    case AudioSourceType.MICROPHONE:
       audiosource.getStreamFromMicrophone().then(init);
       break;
     
-    case UserSelection.LOAD_TYPE.INPUT_FILE:
+    case AudioSourceType.FILE_USER:
       audiosource.loadAudioFromFile( info ).then(init);
       break;
     
-    case UserSelection.LOAD_TYPE.SOUNDCLOUD:
+    case AudioSourceType.SOUNDCLOUD:
       audiosource.getStreamFromSoundcloud( info ).then(init);
       break;
   }
@@ -76,7 +81,7 @@ let userSelection = new UserSelection( (selectionType, info) => {
   function init()
   {
     audiostream.init();
-    if( selectionType != UserSelection.LOAD_TYPE.INPUT_MICROPHONE )
+    if( selectionType != AudioSourceType.MICROPHONE )
       audiosource.play();
     startTimer = new Date();
     lastFrameTimer = startTimer;
