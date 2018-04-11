@@ -51,11 +51,11 @@ export class AudioStream
     }
     else 
     {
-      this.sourceNode.connect( this.gainNode );
-      this.gainNode.connect( this.analyserNode );
+      this.sourceNode.connect( this.analyserNode );
+      this.analyserNode.connect( this.gainNode );
       //this.filterNode.connect( this.analyserNode );
       if( this.audioSource.isThereFeedback() )
-        this.analyserNode.connect( this.audioContext.destination );
+        this.gainNode.connect( this.audioContext.destination );
       if( config.showloginfos ) console.log( `AudioStream class initialized\n------------` );
     }
   }
