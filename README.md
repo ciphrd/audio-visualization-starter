@@ -107,16 +107,7 @@ npm run dev
 ```
 You can access the server by going on: [http://localhost:8080/webpack-dev-server/](http://localhost:8080/webpack-dev-server/) Now every change made to the code while the process started by this command is running will result in a automatic refresh on the browser side.
 
-## Production build
-
-To build your project for an online deployment, you will have to comment this line, because for some reason I couldn't figure out how to make the NODE_ENV variable working:
-
-```js
-// this following line has to be commented to run the prod build
-devtool: "cheap-module-eval-source-map",
-```
-
-Then you can run 
+## Production build 
 
 ```bash 
 npm run prod
