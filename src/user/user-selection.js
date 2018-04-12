@@ -33,6 +33,11 @@ export class UserSelection
 
     // the url provider type
     this.urlState = undefined;
+
+    // the state of the user selection 
+    this.state = UserSelection.STATES.INDEX;
+
+    // were the tracks are
   }
 
 
@@ -360,6 +365,18 @@ export class UserSelection
   {
     return {
       SOUNDCLOUD: 0
+    }
+  }
+
+  /**
+   * The different possible states of the user selection 
+   */
+  static get STATES()
+  {
+    return {
+      INDEX: 0, // no action, selection index
+      INPUT_URL: 1, // user enters an url 
+      LIBRARY_FOLDER: 2, // user is looking the library files 
     }
   }
 
