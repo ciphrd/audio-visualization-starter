@@ -66,16 +66,20 @@
  */
 
 import { UserSelection } from './user/user-selection';
+import { Loader } from './loader/loader';
+
 import AudioSourceType from './audiostream/audio-source-type';
 import { AudioSource } from './audiostream/audio-source';
 import { AudioStream } from './audiostream/audio-stream';
 import { AudioAnalyser } from './audioanalysis/audio-analyser';
+
 import { AnalysedDataVisualizer } from './audioanalysis/utility/analysed-data-visualizer';
-import { Loader } from './loader/loader';
+
 import { HUD } from './hud/hud-controller';
 import { Stats } from './tools/stats';
 import { GUI } from './tools/gui';
 import UserControls from './user/user-controls';
+
 import AppConfig from './config/app.config';
 import AnalyserConfig from './config/analyser.config';
 import audioSourceType from './audiostream/audio-source-type';
