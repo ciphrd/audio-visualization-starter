@@ -2,6 +2,12 @@ import AppConfig from '../config/app.config';
 import AudioSourceType from '../audiostream/audio-source-type';
 import { Loader } from '../loader/loader';
 
+import { UserSelectionComponent } from './components/user-selection.component';
+import { ItemComponent } from './components/item.component';
+import { TrackComponent } from './components/track.component';
+
+
+
 /**
  * Creates a pre-selection screen, handles its dom elements
  * and display an user interface for the audio stream selection
@@ -19,9 +25,6 @@ export class UserSelection
     this.callback = callback;
     this.files = [];
 
-    this.microphoneImg = new Image();
-    this.microphoneImg.src = './dist/img/microphone.svg';
-
     this.loadLibraryFile().then( (library) => {
       
       library.forEach( (soundfile) => {
@@ -35,9 +38,7 @@ export class UserSelection
     this.urlState = undefined;
 
     // the state of the user selection 
-    this.state = UserSelection.STATES.INDEX;
-
-    // were the tracks are
+    this.libraryOpened = false;
   }
 
 
@@ -49,69 +50,45 @@ export class UserSelection
   {
     this.loader.loaded();
 
-    this.domElement = document.createElement("div");
-    this.domElement.setAttribute('id', "user-selection");
-    this.domElement.innerHTML = `
-    <div class="track-selection">
-      <div class="cover"></div>
-      <div class="top-info">Select the track you'd wish to visualize<br>or drop an audio file into the window</div>
-      <div id="url-provider" class="closed">
-        <input type="text" id="url-input"><!--
-     --><div class="arrow">
-          <div class="arrow-icon" style="background-image: url(./dist/img/right-arrow.svg);"></div>
-        </div>
-      </div>
-      <div class="tracks"></div>
-    </div>
-    <div class="cover"></div>`;
-
-    if( AppConfig.hudToggleKey != false )
-      this.domElement.innerHTML+= `<div class="bottom-infos">During the visualization, you can toggle the HUD by pressing ${AppConfig.hudToggleKey.toUpperCase()}</div>`;
-
-    this.domElement.ondragenter = (e) => { e.preventDefault(); };
-    this.domElement.ondragover = (e) => { e.preventDefault(); };
-    this.domElement.ondrop = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      this.dropHandler(e); 
-    };
+    this.component = new UserSelectionComponent( (e) => this.dropHandler(e), AppConfig.hudToggleKey );
     
     // Library files element
     this.files.forEach( (file) => {
-      let tracks = this.domElement.getElementsByClassName("tracks")[0];
-      let track = document.createElement("div");
-      track.setAttribute('class', 'track');
-      track.innerHTML = `
-        <div class="image" style="background-image: url(${file.image});"></div>
-        <div class="track-infos">
-          <span class="artist">${file.artist}</span> - <span class="track-name">${file.name}</span>
-        </div>`;
-      tracks.appendChild(track);
-      track.addEventListener( "click", () => {
+      let track = new TrackComponent( file.image, file.artist, file.name );
+      track.addListener( "click", () => {
         this.loadFile( file );
-      })
+      });
+      this.component.tracksContainer.appendChild( track.dom );
     });
 
+    // Close library button 
+    let goback = new ItemComponent( "return.svg", "Go back to the main selection", ["small-icon", "width-150"] );
+    goback.addListener( "click", () => {
+      this.closeLibrary();
+    });
+    this.component.tracksContainer.appendChild(goback.dom);
+
+    // Open library element 
+    let library = new ItemComponent( "music-folder.svg", "Pick a file from the library", ["small-icon"] );
+    library.addListener( "click", () => {
+      this.openLibrary();
+    });
+    this.component.itemsContainer.appendChild(library.dom);
+
     // Microphone element
-    let micElem = document.createElement("div");
-    micElem.setAttribute("class", "track microphone");
-    micElem.innerHTML = `<div class="icon image" style="background-image: url(./dist/img/microphone.svg);"></div><div class="info-text">Use microphone as input</div>`;
-    micElem.addEventListener( "click", () => {
-      this.loadMicrophone();
-    })
-    this.domElement.getElementsByClassName("tracks")[0].appendChild(micElem);
+    let mic = new ItemComponent( "microphone.svg", "Use microphone as input", ["small-icon", "microphone"] );
+    mic.addListener( "click", () => { this.loadMicrophone(); });
+    this.component.itemsContainer.appendChild(mic.dom);
 
     // Soundcloud element 
-    let soundcloudElem = document.createElement("div");
-    soundcloudElem.setAttribute("class", "track soundcloud");
-    soundcloudElem.innerHTML = `<div class="icon image" style="background-image: url(./dist/img/soundcloud.svg);"></div><div class="info-text">Soundcloud track/playlist</div>`;
-    soundcloudElem.addEventListener( "click", () => {
+    let sc = new ItemComponent( "soundcloud.svg", "Soundcloud track/playlist", ["small-icon", "soundcloud"] );
+    sc.addListener( "click", () => {
       this.urlState = UserSelection.URL_TYPE.SOUNDCLOUD;
       this.openUrlInterface( "https://soundcloud.com/bookboy-860860771/sets/techno-indus" );
     });
-    this.domElement.getElementsByClassName("tracks")[0].appendChild( soundcloudElem );
+    this.component.itemsContainer.appendChild(sc.dom);
 
-    document.body.appendChild( this.domElement );
+    document.body.appendChild( this.component.dom );
 
     // the covers listeners
     let covers = document.getElementsByClassName("cover");
@@ -128,9 +105,43 @@ export class UserSelection
         this.loadUrl( this.getUrl() );
     });
 
-    this.domElement.getElementsByClassName("arrow")[0].addEventListener( "click", () => {
+    this.component.dom.getElementsByClassName("arrow")[0].addEventListener( "click", () => {
       this.loadUrl( this.getUrl() );
     });
+  }
+
+
+  /**
+   * Opens the interface that allows the user to pick from
+   * a track in thre library 
+   */
+  openLibrary()
+  {
+    if( this.libraryOpened === false )
+    {
+      this.libraryOpened = true;
+
+      if( typeof this.urlState !== "undefined" )
+        this.closeUrlInterface();
+      
+      this.component.itemsContainer.classList.add('hide');
+      this.component.tracksContainer.classList.remove('hide');
+    }
+  }
+
+
+  /**
+   * Closes the library interface
+   */
+  closeLibrary()
+  {
+    if( this.libraryOpened )
+    {
+      this.libraryOpened = false;
+
+      this.component.itemsContainer.classList.remove('hide');
+      this.component.tracksContainer.classList.add('hide');
+    }
   }
 
 
@@ -174,8 +185,6 @@ export class UserSelection
    */
   loadUrl( url )
   {
-    this.closeUrlInterface();
-
     if( typeof this.urlState !== "undefined" )
     {
       switch( this.urlState )
@@ -185,6 +194,8 @@ export class UserSelection
           break;
       }
     }
+
+    this.closeUrlInterface();
   }
 
 
@@ -193,6 +204,8 @@ export class UserSelection
    */
   closeUrlInterface()
   {
+    this.urlState = undefined;
+
     // first the cover elements
     let covers = document.getElementsByClassName("cover");
     for( let c = 0; c < covers.length; c++ )
@@ -213,11 +226,11 @@ export class UserSelection
    */
   clearSelection()
   {
-    this.domElement.className+= " hide";
+    this.component.dom.className+= " hide";
 
     return new Promise( (resolve) => {
       setTimeout(()=>{
-        this.domElement.remove();
+        this.component.dom.remove();
         resolve();
       }, 800);
     })

@@ -39,6 +39,15 @@ module.exports =
           { loader: "css-loader" },
           { loader: "sass-loader" }
         ]
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader',
+          options: {
+            attrs: false
+          }
+        }
       }
     ]
   },

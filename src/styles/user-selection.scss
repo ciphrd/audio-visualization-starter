@@ -1,0 +1,294 @@
+#user-selection
+{
+  text-align: center;
+  color: #fff;
+  position: absolute;
+  top: 0; bottom: 0;
+  right: 0; left: 0;
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  font-weight: 300;
+
+  .track-selection
+  {
+    position: relative;
+    top: 50%; left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    z-index: 20;
+
+    .top-info
+    {
+      font-size: 30px;
+      margin-bottom: 25px;
+      -webkit-transform: translateY(0);
+          -ms-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    #url-provider 
+    {
+      height: 0;
+      overflow: hidden;
+      margin-top: 0;
+      margin-bottom: 0;
+      transition: height 0.5s, margin-top 0.5s, margin-bottom 0.5s;
+      position: relative;
+      z-index: 20;
+
+      input 
+      {
+        display: inline-block;
+        height: 40px;
+        width: 70%;
+        outline: none;
+        border: none;
+        -webkit-border-top-left-radius: 3px;
+        -webkit-border-bottom-left-radius: 3px;
+        -moz-border-radius-topleft: 3px;
+        -moz-border-radius-bottomleft: 3px;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        vertical-align: top;
+        padding: 0 15px 0 15px;
+        font-family: 'Lato', Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        color: #333333;
+      }
+
+      .arrow
+      {
+        display: inline-block;
+        height: 40px;
+        width: 70px;
+        background: #fff;
+        -webkit-border-top-right-radius: 3px;
+        -webkit-border-bottom-right-radius: 3px;
+        -moz-border-radius-topright: 3px;
+        -moz-border-radius-bottomright: 3px;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        line-height: 0;
+        vertical-align: top;
+        text-align: center;
+        cursor: pointer;
+
+        .arrow-icon
+        {
+          height: 20px;
+          width: 20px;
+          background-size: cover;
+          line-height: 0;
+          margin-top: 10px;
+          margin-left: 40px; 
+          opacity: 0.5;
+          transition: opacity 0.5s;
+        }
+      }
+
+      .arrow:hover .arrow-icon
+      {
+        opacity: 0.8;
+      }
+
+      &.opened
+      {
+        height: 40px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+    }
+
+    .tracks-container 
+    {
+      -webkit-transform: translateY(0);
+          -ms-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+      margin-top: 25px;
+      position: relative;
+      z-index: 1;
+      transition: transform 1s ease-out, opacity 1s;
+      height: 200px;
+
+      &.hide
+      {
+        -webkit-transform: translateY(50px);
+            -ms-transform: translateY(50px);
+                transform: translateY(50px);
+        pointer-events: none;
+        opacity: 0;
+      }
+
+      .tracks
+      {
+        position: absolute;
+        top: 0; left: 50%;
+        -webkit-transform: translateX(-50%) translateY(0);
+            -ms-transform: translateX(-50%) translateY(0);
+                transform: translateX(-50%) translateY(0);
+        opacity: 1;
+        z-index: 2;
+        transition: transform 1s ease-out, opacity 1s;
+
+        &.hide
+        {
+          pointer-events: none;
+          opacity: 0;
+          z-index: 20;
+          -webkit-transform: translateX(-50%) translateY(50px);
+            -ms-transform: translateX(-50%) translateY(50px);
+                transform: translateX(-50%) translateY(50px);
+        }
+
+        .track 
+        {
+          display: inline-block;
+          cursor: pointer;
+          margin-left: 50px;
+          text-align: center;
+          vertical-align: top;
+
+          &.width-150
+          {
+            width: 150px;
+          }
+
+          &:first-child
+          {
+            margin-left: 0;
+          }
+
+          .image
+          {
+            width: 150px; height: 150px;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 3px;
+            -webkit-transform: translateY(0);
+                -ms-transform: translateY(0);
+                    transform: translateY(0);
+            opacity: 0.85;
+            transition: transform 0.7s, opacity 0.5s;
+            display: inline-block;
+          }
+
+          &:hover 
+          {
+            .image
+            {
+              -webkit-transform: translateY(-8px);
+                  -ms-transform: translateY(-8px);
+                      transform: translateY(-8px);
+              opacity: 1;
+              transition: transform 0.8s ease-in, opacity 0.5s;
+            }
+          }
+
+          .track-infos
+          {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #666666;
+            max-width: 200px;
+
+            .artist, .track-name 
+            {
+              color: #ffffff;
+            }
+
+            .artist
+            {
+              display: inline-block;
+              margin-right: 5px;
+            }
+
+            .track-name
+            {
+              display: inline-block;
+              margin-left: 5px;
+            }
+          }
+
+          &.small-icon
+          {
+            .info-text
+            {
+              margin-top: 10px;
+            }
+
+            .icon 
+            {
+              background-size: 50px 50px;
+              background-position: center center;
+              background-repeat: no-repeat;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.hide .track-selection .top-info, .track-selection .top-info.hide
+  {
+    -webkit-transform: translateY(-50px);
+        -ms-transform: translateY(-50px);
+            transform: translateY(-50px);
+    pointer-events: none;
+    opacity: 0;
+    transition: transform 1s ease-out, opacity 1s;
+  }
+
+  .cover
+  {
+    background: #000;
+    position: absolute;
+    top: 0; left: 0;
+    bottom: 0; right: 0;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+
+    &.opened 
+    {
+      opacity: 0.7;
+      pointer-events: all;
+    }
+  }
+
+  .bottom-infos
+  {
+    font-size: 16px;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: #AAAAAA;
+    opacity: 1;
+  }
+
+  &.hide 
+  {
+    .track-selection .tracks
+    {
+      -webkit-transform: translateY(50px) translateX(-50%);
+          -ms-transform: translateY(50px) translateX(-50%);
+              transform: translateY(50px) translateX(-50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: transform 1s ease-out, opacity 1s;
+    }
+
+    .bottom-infos
+    {
+      opacity: 0;
+      bottom: -10px;
+      transition: opacity 1s, bottom 1s;
+    }
+  }
+}

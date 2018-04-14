@@ -65,6 +65,7 @@
  *    may not be interested in the underlaying process of sound analysis. Therefore this file gives you a good
  */
 
+import './tools/import-css';
 import { UserSelection } from './user/user-selection';
 import { Loader } from './loader/loader';
 
