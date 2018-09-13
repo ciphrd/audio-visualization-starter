@@ -2,18 +2,18 @@
 
 This project was created to provide a powerful and flexible solution to creative audio visualization experiments. You may want to use it if you're only focused on creating visuals and you don't want to invest time in beat detection algorithms. It bundles a few modules that allows you to only focus on interpreting analysed audio data. Here are examples that I made using this project as a core:
 
-* [A simple 2D canvas visualizer, without user-selection at the beginning](http://crespy-baptiste.com/repo/simple-visualizer/)
-* [3D fractals "dive-in", based on Barry Martin's Hopalong Orbits Visualizer](http://crespy-baptiste.com/repo/fractals-dive-in/)
-* [3D creepy head](http://crespy-baptiste.com/repo/creepy-head)
-* [Dark metaballs](http://crespy-baptiste.com/repo/dark-metaballs/)
+* [A simple 2D canvas visualizer, without user-selection at the beginning](https://repo.crespy-baptiste.com/simple-visualizer/)
+* [3D fractals "dive-in", based on Barry Martin's Hopalong Orbits Visualizer](https://repo.crespy-baptiste.com/fractals-dive-in/)
+* [3D creepy head](https://repo.crespy-baptiste.com/creepy-head)
+* [Dark metaballs](https://repo.crespy-baptiste.com/dark-metaballs/)
 
 
 ## What does it do ?
 
 This is what you will get if you run this project as it is right now: 
-[Audio visualisation starter](http://crespy-baptiste.com/repo/audio-visualization-starter/)
+[Audio visualisation starter](https://repo.crespy-baptiste.com/audio-visualization-starter/)
 
-![Preview](http://crespy-baptiste.com/repo/audio-visualization-starter/git-doc/preview.jpg)
+![Preview](https://repo.crespy-baptiste.com/audio-visualization-starter/git-doc/preview.jpg)
 
 What you can see here is the Visual Helper, it gives you feedback visual informations on what the algorithm is doing in the background. You will only use this as a visual guidance if you want to understand how the peak detection works.
 
@@ -36,7 +36,7 @@ This data will give you enough informations to make visuals that react according
 
 ## Ok great, but how does it work ? HOW DO I USE IT ?
 
-Wow, give me a second. I really think that you have to understand how all these data are influenced by the audio. So, again, take your time and play with the [Visual Helper](http://crespy-baptiste.com/repo/audio-visualization-starter/) to visualize it.
+Wow, give me a second. I really think that you have to understand how all these data are influenced by the audio. So, again, take your time and play with the [Visual Helper](https://repo.crespy-baptiste.com/audio-visualization-starter/) to visualize it.
 
 ### The core of this project
 
@@ -119,7 +119,7 @@ The js will be bundled in *./dist/app.js*, to upload the project online you only
 
 Besides the **config** files (we'll go through them in the next section), the *./src/main.js* is the only file you should edit. If you open it, you'll see a lot of informations in the comments to help you understand how it works. This section will not repeat what's in that file because it is self-explanatory, and also I'm lazy. However, I made a graphic which explains how the components are created, initialized and the data cycle between them.
 
-![Graphic informations](http://crespy-baptiste.com/repo/audio-visualization-starter/git-doc/graphic.jpg)
+![Graphic informations](https://repo.crespy-baptiste.com/audio-visualization-starter/git-doc/graphic.jpg)
 
 # How to configure the components
 
